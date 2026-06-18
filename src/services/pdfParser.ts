@@ -32,19 +32,14 @@ async function extractDigitalText(pdf: pdfjsLib.PDFDocumentProxy): Promise<strin
 
 // renders pdf pages onto an off-screen html canvas and runs tesseract ocr
 // to scrape text out of scanned images or flat photo documents
-async function extractOcrText(file: File, pdf: pdfjsLib.PDFDocumentProxy): Promise<string> {
+async function extractOcrText(pdf: pdfjsLib.PDFDocumentProxy): Promise<string> {
     let fullText: string = '';
 
     // initialize the tesseract worker for english text
     const worker = await createWorker('eng');
 
-    // convert file to an ArrayBuffer for internal pdfjs canvas rendering hooks
-    const arrayBuffer = await file.arrayBuffer();
-    const loadingTask = pdfjsLib.getDocument({data: arrayBuffer});
-    const internalPdf = await loadingTask.promise;
-
-    for (let i = 1; i <= internalPdf.numPages; i++) {
-        const page = await internalPdf.getPage(i);
+    for (let i = 1; i <= pdf.numPages; i++) {
+        const page = await pdf.getPage(i);
 
         // set up a standard 1.5x resolution scale for clean text image legibility
         const viewport = page.getViewport({scale: 1.5});
@@ -58,7 +53,7 @@ async function extractOcrText(file: File, pdf: pdfjsLib.PDFDocumentProxy): Promi
         if (!context) continue;
 
         // render the pdf page into the canvas context natively
-        await page.render({canvasContext: context, viewport}).promise;
+        await page.render({canvasContext: context, viewport, canvas}).promise;
 
         // convert canvas img frame to a data url and feed it directly to tesseract
         const imgUrl = canvas.toDataURL('image/png');
@@ -73,4 +68,29 @@ async function extractOcrText(file: File, pdf: pdfjsLib.PDFDocumentProxy): Promi
     // shut down the bg multi-thread worker safely to avoid memory leaks
     await worker.terminate();
     return fullText.trim();
+}
+
+
+// master extraction hub: extracts all text from a given pdf file
+// automatically switches to ocr if a doc is scanned or lacks selectable text layers
+export async function extractTextFromPdf(file: File): Promise<string> {
+    try {
+         const arrayBuffer = await file.arrayBuffer();
+         const loadingTask = pdfjsLib.getDocument({data: arrayBuffer});
+         const pdf = await loadingTask.promise;
+
+         // step 1: attempt fast digital text extraction
+         const digitalText = await extractDigitalText(pdf);
+
+         // step 2: fallback check. if extracted text is empty or negligible,
+         // its highly likely a flat scanned img, so trigger the ocr engine
+         const cleanCheck = digitalText.replace(/--- Page \d+ ---|\s/g, '');
+         if (cleanCheck.length < 15) return await extractOcrText(pdf);
+ 
+         return digitalText;
+    }
+    catch (error: any) {
+        console.error('PDF Parser Failure:', error);
+        throw new Error(`Failed to read doc contents: ${error.message}`);
+    }
 }
