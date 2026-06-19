@@ -12,7 +12,7 @@ interface DocDropzoneProps {
 export default function DocDropzone({onFileAccepted, status}: DocDropzoneProps): React.JSX.Element {
     const [isDragActive, setIsDragActive] = useState<boolean>(false);
 
-    // 1. handle drag handlers
+    // 1. handle drag
     const handleDrag = (event: DragEvent<HTMLDivElement>) => {
         event.preventDefault();
         event.stopPropagation();
@@ -22,6 +22,24 @@ export default function DocDropzone({onFileAccepted, status}: DocDropzoneProps):
         }
         else if (event.type === 'dragleave') {
             setIsDragActive(false);
+        }
+    }
+
+    // 2. handle file drop
+    const handleDrop = (event: DragEvent<HTMLDivElement>) => {
+        event.preventDefault();
+        event.stopPropagation();
+        setIsDragActive(false);
+
+        if (event.dataTransfer.files && event.dataTransfer.files[0]) {
+            const droppedFile = event.dataTransfer.files[0];
+
+            if (droppedFile.type === 'application/pdf') {
+                onFileAccepted(droppedFile);
+            }
+            else {
+                alert('ParsePrism currently only handles PDF documents');
+            }
         }
     }
     
