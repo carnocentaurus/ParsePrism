@@ -16,14 +16,14 @@ export interface ExtractedDocData {
     taxAmount: number;
     invoiceOrRefNum: string;
     lineItems: Array<{
-        desc: string;
+        description: string;
         amount: number;
     }>;
     confidenceNotes: string;
 }
 
 // strict gemini json schema matching the interface
-const extractionScheme: Schema = {
+const extractionSchema: Schema = {
     type: Type.OBJECT,
     properties: {
         vendorName: {
@@ -62,6 +62,35 @@ const extractionScheme: Schema = {
             type: Type.STRING,
             description: 'Brief note if any data fields were blurry, ambigous, or missing from the text.'
         },
-        required: ['vendorName', 'totalAmount']
+    },
+    required: ['vendorName', 'totalAmount'] as const
+}
+
+
+// sends raw doc text to gemini and retrieves a strictly typed json dataset
+export async function structureTextWithAI(rawText: string): Promise<ExtractedDocData> {
+    if (!apiKey) throw new Error('Gemini API key missing. Check .env config');
+
+    try {
+        const response = await ai.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: `Analyze this extracted document text block and accurately pull out the structure transaction details: \n\n${rawText}`,
+            config: {
+                // enforce immutable json response schema
+                responseMimeType: 'application/json',
+                responseSchema: extractionSchema,
+                // kept very low for factual deterministic extraction rather than creativity
+                temperature: 0.1 
+            }
+        });
+
+        if (!response.text) throw new Error('The AI returned an empty response');
+
+        // because responseSchema is strictly enforced, this safely parses directly to the interface shape
+        return JSON.parse(response.text) as ExtractedDocData;
+    }
+    catch (error: any) {
+        alert(`Gemini extraction failure: ${error.msg}`);
+        throw new Error(`AI processing failed: ${error.message}`);
     }
 }
