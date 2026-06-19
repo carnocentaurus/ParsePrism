@@ -12,7 +12,7 @@ interface DocDropzoneProps {
 export default function DocDropzone({onFileAccepted, status}: DocDropzoneProps): React.JSX.Element {
     const [isDragActive, setIsDragActive] = useState<boolean>(false);
 
-    // 1. handle drag
+    // handle drag
     const handleDrag = (event: DragEvent<HTMLDivElement>) => {
         event.preventDefault();
         event.stopPropagation();
@@ -25,7 +25,7 @@ export default function DocDropzone({onFileAccepted, status}: DocDropzoneProps):
         }
     }
 
-    // 2. handle file drop
+    // handle file drop
     const handleDrop = (event: DragEvent<HTMLDivElement>) => {
         event.preventDefault();
         event.stopPropagation();
@@ -43,14 +43,21 @@ export default function DocDropzone({onFileAccepted, status}: DocDropzoneProps):
         }
     }
 
-    // 3. handle fallback manual file click input selection
+    // handle fallback manual file click input selection
     const handleFileInput = (event: ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files[0]) {
             onFileAccepted(event.target.files[0]);
         }
     }
     
-    return(
-        <div></div>
-    );
+    // render dynamic ui loaders based on parsing stages
+    if (status === 'parsing_file') {
+        return(
+            <div className="flex flex-col items-center justify-center p-12 border-2 border-dashed border-blue-500 bg-blue-50 rounded-xl min-h-[300px]">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
+                <p className="text-blue-800 font-medium">Extracting layout lines locally...</p>
+                <p className="text-xs text-blue-500 mt-1">Rasterizing canvases & extracting text arrays</p>
+            </div>
+        );
+    }
 }
