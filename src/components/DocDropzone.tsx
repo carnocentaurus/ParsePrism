@@ -42,6 +42,13 @@ export default function DocDropzone({onFileAccepted, status}: DocDropzoneProps):
             }
         }
     }
+
+    // 3. handle fallback manual file click input selection
+    const handleFileInput = (event: ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files && event.target.files[0]) {
+            onFileAccepted(event.target.files[0]);
+        }
+    }
     
     return(
         <div></div>
