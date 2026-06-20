@@ -148,6 +148,21 @@ export default function DataPreviewTable({data, fileName, onReset}: DataPreviewT
                     </table>
                 </div>
             </div>
+
+
+            {/* AI CONFIDENCE AUDIT INDICATOR NOTES FOOTER */}
+            {data.confidenceNotes && (
+                <div className="px-6 py-4 bg-amber-50 border-t border-amber-100 flex gap-2.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5 text-amber-600 shrink-0 mt-0.5">
+                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.25v2.75a.75.75 0 001.5 0v-3.75A.75.75 0 0010 9H9z" clipRule="evenodd" />
+                    </svg>
+
+                    <div>
+                        <span className="font-semibold text-amber-800 text-xs uppercase tracking-wider block">AI Engine Analysis Notes</span>
+                        <p className="text-amber-900 text-sm mt-0.5 leading-relaxed">{data.confidenceNotes}</p>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
