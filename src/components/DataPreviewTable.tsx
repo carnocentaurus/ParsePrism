@@ -87,6 +87,35 @@ export default function DataPreviewTable({data, fileName, onReset}: DataPreviewT
                     </button>
                 </div>
             </div>
+
+
+            {/* CORE DOC SUMMARY FIELD BLOCKS */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 p-6 bg-slate-50/50 border-b border-gray-200">
+                <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-gray-400">Vendor Entity</label>
+                    <p className="mt-1 font-medium text-gray-900 wrap-break-word">{data.vendorName || '—'}</p>
+                </div>
+
+                <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-gray-400">Document Date</label>
+                    <p className="mt-1 font-medium text-gray-900">{data.docDate || '—'}</p>
+                </div>
+
+                <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-gray-400">Reference / Invoice #</label>
+                    <p className="mt-1 font-mono font-medium text-gray-900 break-all">{data.invoiceOrRefNum || '—'}</p>
+                </div>
+
+                <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-gray-400">Tax Collected</label>
+                    <p className="mt-1 font-medium text-gray-900">${data.taxAmount.toFixed(2)}</p>
+                </div>
+
+                <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-gray-400">Grand Total</label>
+                    <p className="mt-1 font-bold text-lg text-blue-600">${data.totalAmount.toFixed(2)}</p>
+                </div>
+            </div>
         </div>
     );
 }
