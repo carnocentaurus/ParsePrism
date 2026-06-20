@@ -60,4 +60,18 @@ export default function DocDropzone({onFileAccepted, status}: DocDropzoneProps):
             </div>
         );
     }
+
+    if (status === 'structuring_ai') {
+        return (
+            <div className="flex flex-col items-center justify-center p-12 border-2 border-dashed border-purple-500 bg-purple-50 rounded-xl min-h-[300px]">
+                <div className="animate-pulse flex space-x-2 justify-center items-center mb-4">
+                    <div className="h-4 w-4 bg-purple-600 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+                    <div className="h-4 w-4 bg-purple-600 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+                    <div className="h-4 w-4 bg-purple-600 rounded-full animate-bounce"></div>
+                </div>
+                <p className="text-purple-800 font-medium">Gemini AI is structuring data objects...</p>
+                <p className="text-xs text-purple-500 mt-1">Enforcing transactional JSON schemas</p>
+            </div>
+        );
+    }
 }
