@@ -86,6 +86,28 @@ export default function App(): React.JSX.Element {
                         </div>
                     </div>
                 )}
+
+                {/* Core Component Active Switchboard Section Container */}
+                <div className="space-y-8">
+                    {status !== 'success' ? (
+                    <div className="max-w-3xl mx-auto">
+                        <DocDropzone 
+                            onFileAccepted={processDoc} 
+                            status={status} 
+                        />
+                    </div>
+                    ) : (
+                         extractedData && (
+                            <div className="animate-slide-up">
+                                <DataPreviewTable 
+                                    data={extractedData} 
+                                    fileName={fileName} 
+                                    onReset={resetExtraction} 
+                                />
+                            </div>
+                        )
+                    )}
+                </div>
             </main>
         </main>
     );

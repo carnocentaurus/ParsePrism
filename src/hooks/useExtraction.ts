@@ -4,7 +4,7 @@ import { useState } from "react";
 import { extractTextFromPdf } from "../services/pdfParser";
 import { structureTextWithAI, type ExtractedDocData } from "../services/geminiService";
 
-export type ExtractionStatus = 'idle' | 'parsing_file' | 'structuring_ai' | 'sucess' | 'error';
+export type ExtractionStatus = 'idle' | 'parsing_file' | 'structuring_ai' | 'success' | 'error';
 
 
 export function useExtraction() {
@@ -37,7 +37,7 @@ export function useExtraction() {
 
             // 3. save resulting transaction dataset to state hook memory
             setExtractedData(structuredJson);
-            setStatus('sucess');
+            setStatus('success');
         }
         catch (error: any) {
             alert(`Document pipeline failed: ${error.message}`);
