@@ -52,6 +52,22 @@ export default function App(): React.JSX.Element {
                     </div>
                 </div>
             </header>
+
+
+            {/* MAIN CONTAINER LAYOUT BODY GRID WORKSPACE */}
+            <main className="max-w-6xl mx-auto px-4 py-10">
+                {/* Intro Branding Header Blocks */}
+                {status === 'idle' && (
+                    <div className="text-center max-w-2xl mx-auto mb-10 animate-fade-in">
+                        <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight sm:text-4xl">
+                            Turn Unstructured PDFs into Clean Data
+                        </h2>
+                        <p className="mt-3 text-lg text-slate-500 leading-relaxed">
+                            Upload standard receipts, contracts, or scanned image invoices. ParsePrism maps layout elements locally before distilling fields using guaranteed AI data models.
+                        </p>
+                    </div>
+                )}
+            </main>
         </main>
     );
 }
