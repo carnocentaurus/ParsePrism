@@ -9,7 +9,6 @@ interface DataPreviewTableProps {
     onReset: () => void;
 }
 
-
 export default function DataPreviewTable({data, fileName, onReset}: DataPreviewTableProps): React.JSX.Element {
     // converts individual table rows into a flat layout text structure and downloads it
     const exportToCsv = () => {
@@ -61,28 +60,25 @@ export default function DataPreviewTable({data, fileName, onReset}: DataPreviewT
     }
 
     return(
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+        <div className="bg-white border border-black overflow-hidden">
             {/* TABLE ACTION HEADER BAR */}
-            <div className="border-b border-gray-200 bg-gray-50 px-6 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="border-b border-black bg-white px-6 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
-                    <h2 className="text-lg font-semibold text-gray-900">Extracted Schema Output</h2>
-                    <p className="text-xs text-gray-500 mt-0.5 truncate max-w-md">Source: {fileName || 'Uploaded Document'}</p>
+                    <h2 className="text-lg font-bold text-black uppercase tracking-widest">Extracted Schema Output</h2>
+                    <p className="text-xs text-gray-600 mt-1 truncate max-w-md font-medium">Source: {fileName || 'Uploaded Document'}</p>
                 </div>
 
                 <div className="flex items-center gap-3">
                     <button
                         onClick={onReset}
-                        className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                        className="px-4 py-2 text-xs uppercase tracking-widest font-bold text-black bg-white border border-black hover:bg-gray-100 transition-none"
                     >
                         Clear File
                     </button>
                     <button
                         onClick={exportToCsv}
-                        className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 shadow-sm transition-colors flex items-center gap-1.5"
+                        className="px-4 py-2 text-xs uppercase tracking-widest font-bold text-white bg-black border border-black hover:bg-gray-800 transition-none flex items-center gap-1.5"
                     >
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
-                        </svg>
                         Export to CSV
                     </button>
                 </div>
@@ -90,56 +86,56 @@ export default function DataPreviewTable({data, fileName, onReset}: DataPreviewT
 
 
             {/* CORE DOC SUMMARY FIELD BLOCKS */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 p-6 bg-slate-50/50 border-b border-gray-200">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 p-6 bg-white border-b border-black">
                 <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-gray-400">Vendor Entity</label>
-                    <p className="mt-1 font-medium text-gray-900 wrap-break-word">{data.vendorName || '—'}</p>
+                    <label className="block text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">Vendor Entity</label>
+                    <p className="font-bold text-black wrap-break-word">{data.vendorName || '—'}</p>
                 </div>
 
                 <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-gray-400">Document Date</label>
-                    <p className="mt-1 font-medium text-gray-900">{data.docDate || '—'}</p>
+                    <label className="block text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">Document Date</label>
+                    <p className="font-bold text-black">{data.docDate || '—'}</p>
                 </div>
 
                 <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-gray-400">Reference / Invoice #</label>
-                    <p className="mt-1 font-mono font-medium text-gray-900 break-all">{data.invoiceOrRefNum || '—'}</p>
+                    <label className="block text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">Reference / Invoice #</label>
+                    <p className="font-mono font-bold text-black break-all">{data.invoiceOrRefNum || '—'}</p>
                 </div>
 
                 <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-gray-400">Tax Collected</label>
-                    <p className="mt-1 font-medium text-gray-900">${data.taxAmount.toFixed(2)}</p>
+                    <label className="block text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">Tax Collected</label>
+                    <p className="font-bold text-black">${data.taxAmount.toFixed(2)}</p>
                 </div>
 
                 <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-gray-400">Grand Total</label>
-                    <p className="mt-1 font-bold text-lg text-blue-600">${data.totalAmount.toFixed(2)}</p>
+                    <label className="block text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">Grand Total</label>
+                    <p className="font-bold text-xl text-black">${data.totalAmount.toFixed(2)}</p>
                 </div>
             </div>
 
 
             {/* TRANSACTION GRID ITEM TABLE */}
-            <div className="p-6">
-                <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wider mb-3">Itemized Line Breakdown</h3>
-                <div className="overflow-x-auto border border-gray-200 rounded-lg">
-                    <table className="min-w-full divide-y divide-gray-200 text-sm">
-                        <thead className="bg-gray-50">
+            <div className="p-6 bg-gray-50">
+                <h3 className="text-xs font-bold text-black uppercase tracking-widest mb-4">Itemized Line Breakdown</h3>
+                <div className="overflow-x-auto border border-black">
+                    <table className="min-w-full divide-y divide-black text-sm">
+                        <thead className="bg-black text-white">
                             <tr>
-                                <th scope="col" className="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider w-3/4">Description</th>
-                                <th scope="col" className="px-6 py-3 text-right font-medium text-gray-500 uppercase tracking-wider w-1/4">Amount</th>
+                                <th scope="col" className="px-6 py-3 text-left font-bold uppercase tracking-widest w-3/4 text-xs">Description</th>
+                                <th scope="col" className="px-6 py-3 text-right font-bold uppercase tracking-widest w-1/4 text-xs">Amount</th>
                             </tr>
                         </thead>
-                        <tbody className="bg-white divide-y divide-gray-200">
+                        <tbody className="bg-white divide-y divide-black">
                             {data.lineItems && data.lineItems.length > 0 ? (
                                 data.lineItems.map((item, index) => (
-                                    <tr key={index} className="hover:bg-gray-50/70 transition-colors">
-                                        <td className="px-6 py-4 text-gray-900 whitespace-normal wrap-break-word">{item.description}</td>
-                                        <td className="px-6 py-4 text-right text-gray-900 font-mono">${item.amount.toFixed(2)}</td>
+                                    <tr key={index} className="hover:bg-gray-100 transition-none">
+                                        <td className="px-6 py-4 text-black font-bold whitespace-normal wrap-break-word">{item.description}</td>
+                                        <td className="px-6 py-4 text-right text-black font-mono font-bold">${item.amount.toFixed(2)}</td>
                                     </tr>
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan={2} className="px-6 py-8 text-center text-gray-400 italic">
+                                    <td colSpan={2} className="px-6 py-8 text-center text-black font-bold uppercase tracking-widest text-xs">
                                         No granular structured sub-line items identified inside document frame.
                                     </td>
                                 </tr>
@@ -152,14 +148,10 @@ export default function DataPreviewTable({data, fileName, onReset}: DataPreviewT
 
             {/* AI CONFIDENCE AUDIT INDICATOR NOTES FOOTER */}
             {data.confidenceNotes && (
-                <div className="px-6 py-4 bg-amber-50 border-t border-amber-100 flex gap-2.5">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5 text-amber-600 shrink-0 mt-0.5">
-                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.25v2.75a.75.75 0 001.5 0v-3.75A.75.75 0 0010 9H9z" clipRule="evenodd" />
-                    </svg>
-
+                <div className="px-6 py-4 bg-gray-200 border-t border-black flex gap-2.5">
                     <div>
-                        <span className="font-semibold text-amber-800 text-xs uppercase tracking-wider block">AI Engine Analysis Notes</span>
-                        <p className="text-amber-900 text-sm mt-0.5 leading-relaxed">{data.confidenceNotes}</p>
+                        <span className="font-bold text-black text-xs uppercase tracking-widest block mb-2">AI Engine Analysis Notes</span>
+                        <p className="text-black text-sm leading-relaxed font-bold">{data.confidenceNotes}</p>
                     </div>
                 </div>
             )}
